@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+import "./Header.css"
 
 const Header = () => {
   const [name, setName] = useState("");
@@ -15,8 +16,10 @@ const Header = () => {
   return (
     <div>
       <div>
+        <div id = "header">
         <label for="name">Enter The Name For To-Do-List</label>
         <br></br>
+        <div id = "textbox">
         <input
           type="text"
           id="nameForToDoList"
@@ -26,6 +29,8 @@ const Header = () => {
         <button type="button" id="btn1" onClick={handleButtonClick}>
           Enter
         </button>{" "}
+        </div>
+        </div>
         <br></br>
         <p id="paragraph"> {displayValue} TO DO LIST</p>
       </div>

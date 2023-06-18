@@ -1,72 +1,73 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import "./Content.css";
+import { FaTrash } from "react-icons/fa";
 
 const Content = () => {
-  
-  const [checked, setChecked] = useState(0);
-  const [remainingBox, setRemainingBox] = useState(5);
+  const [items, setItems] = useState([
+    { id: "checkbox1", label: "Drink Water", checked: false },
+    { id: "checkbox2", label: "Exercise", checked: false },
+    { id: "checkbox3", label: "Learn React", checked: false }
+  ]);
+  const [newLabel, setNewLabel] = useState("");
 
-  const handleCheckboxChange = () => {
-    
-    const inputElems = document.getElementsByClassName("boxes");
-    const totalBoxes = inputElems.length;
-    let count = 0;
-
-
-    for (let i = 0; i < totalBoxes; i++) {
-      if (inputElems[i].type === "checkbox" && inputElems[i].checked) {
-        count++;
-      }
-    }
-
-    setChecked(count);
-    setRemainingBox(totalBoxes - count);
+  const handleCheckboxChange = (itemId) => {
+    setItems((prevItems) =>
+      prevItems.map((item) =>
+        item.id === itemId ? { ...item, checked: !item.checked } : item
+      )
+    );
   };
 
+  const deleteCheckbox = (itemId) => {
+    setItems((prevItems) => prevItems.filter((item) => item.id !== itemId));
+  };
+
+  const addCheckbox = () => {
+    if (newLabel.trim() === "") {
+      return (alert("Cant add empty checklist")); // Prevent adding empty labels
+    }
+
+    const newId = `checkbox${items.length + 1}`;
+    const newItem = { id: newId, label: newLabel, checked: false };
+
+    setItems((prevItems) => [...prevItems, newItem]);
+    setNewLabel(""); // Reset the new label input
+  };
+
+  const handleNewLabelChange = (event) => {
+    setNewLabel(event.target.value);
+  };
+
+  const checkedCount = items.filter((item) => item.checked).length;
+  const remainingBox = items.length - checkedCount;
+
   return (
-    <div>
-      <input
-        type="checkbox"
-        className="boxes"
-        id="btn1"
-        onChange={handleCheckboxChange}
-      />
-      <label htmlFor="water">Drink Water</label>
-      <br />
-      <input
-        type="checkbox"
-        className="boxes"
-        id="btn2"
-        onChange={handleCheckboxChange}
-      />
-      <label htmlFor="exercise">Exercise</label>
-      <br />
-      <input
-        type="checkbox"
-        className="boxes"
-        id="btn3"
-        onChange={handleCheckboxChange}
-      />
-      <label htmlFor="study">Learn React</label>
-      <br />
-      <input
-        type="checkbox"
-        className="boxes"
-        id="btn4"
-        onChange={handleCheckboxChange}
-      />
-      <label htmlFor="breakfast">Make Breakfast</label>
-      <br />
-      <input
-        type="checkbox"
-        className="boxes"
-        id="btn5"
-        onChange={handleCheckboxChange}
-      />
-      <label htmlFor="german">Learn German</label>
-      <br />
+    <div id="box">
+      {items.map((item) => (
+        <div key={item.id}>
+          <input
+            type="checkbox"
+            className="boxes"
+            id={item.id}
+            checked={item.checked}
+            onChange={() => handleCheckboxChange(item.id)}
+          />
+          <label htmlFor={item.id}>{item.label}</label>
+          <FaTrash role="button" onClick={() => deleteCheckbox(item.id)} />
+          <br />
+        </div>
+      ))}
+      <div>
+        <input
+          type="text"
+          value={newLabel}
+          onChange={handleNewLabelChange}
+          placeholder="Add checklist"
+        />
+        <button onClick={addCheckbox}>Add</button>
+      </div>
       <p>
-        {checked} boxes checked, {remainingBox} boxes remaining
+        {checkedCount} boxes checked, {remainingBox} boxes remaining
       </p>
     </div>
   );

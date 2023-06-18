@@ -4,3 +4,10 @@ input[type=checkbox]:checked + label{
   input[type=checkbox]:not(:checked ) + label{
     text-decoration: none;
   }
+  svg:hover{
+    color:bisque;
+  }
+  #box{
+    display: flex;
+    flex-direction: column;
+  }
