@@ -67,7 +67,7 @@ const Content = () => {
         <button onClick={addCheckbox}>Add</button>
       </div>
       <p>
-        {checkedCount} boxes checked, {remainingBox} boxes remaining
+       {checkedCount} {checkedCount <= 1 ? "box checked" : "boxes checked"},{remainingBox} {remainingBox <= 1 ? "box remaining" : "boxes remaining"}
       </p>
     </div>
   );
